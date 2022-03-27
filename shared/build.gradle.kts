@@ -2,44 +2,12 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("kotlinx-serialization")
-    id("com.android.library")
     id("com.squareup.sqldelight")
-}
-
-android {
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-        targetSdk = libs.versions.targetSdk.get().toInt()
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
-
-    lint {
-        isWarningsAsErrors = true
-        isAbortOnError = true
-    }
 }
 
 version = "1.2"
 
-android {
-    configurations {
-        create("androidTestApi")
-        create("androidTestDebugApi")
-        create("androidTestReleaseApi")
-        create("testApi")
-        create("testDebugApi")
-        create("testReleaseApi")
-    }
-}
-
 kotlin {
-    android()
     ios()
     // Note: iosSimulatorArm64 target requires that all dependencies have M1 support
     iosSimulatorArm64()
@@ -71,20 +39,11 @@ kotlin {
                 implementation(libs.bundles.shared.commonTest)
             }
         }
-        val androidMain by getting {
-            dependencies {
-                implementation(libs.sqlDelight.android)
-                implementation(libs.ktor.client.okHttp)
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-                implementation(libs.bundles.shared.androidTest)
-            }
-        }
+
         val iosMain by getting {
             dependencies {
                 implementation(libs.sqlDelight.native)
+                implementation(libs.sqliter.driver)
                 implementation(libs.ktor.client.ios)
                 val coroutineCore = libs.coroutines.core.get()
                 implementation("${coroutineCore.module.group}:${coroutineCore.module.name}:${coroutineCore.versionConstraint.displayName}") {
@@ -116,11 +75,15 @@ kotlin {
         }
         ios.deploymentTarget = "12.4"
         podfile = project.file("../ios/Podfile")
+        pod("SQLCipher") {
+            version = "~> 4.5"
+        }
     }
 }
 
 sqldelight {
     database("KaMPKitDb") {
         packageName = "co.touchlab.kampkit.db"
+        linkSqlite = false
     }
 }

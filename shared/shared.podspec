@@ -13,7 +13,7 @@ Pod::Spec.new do |spec|
 
     spec.ios.deployment_target = '12.4'
 
-                
+    spec.dependency 'SQLCipher', '~> 4.5'
 
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':shared',
