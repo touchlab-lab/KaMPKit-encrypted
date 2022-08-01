@@ -547,7 +547,6 @@
 					"-l\"c++\"",
 					"-framework",
 					"\"shared\"",
-					"-lsqlite3",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = co.touchlab.kampkit.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -574,7 +573,6 @@
 					"-l\"c++\"",
 					"-framework",
 					"\"shared\"",
-					"-lsqlite3",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = co.touchlab.kampkit.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
